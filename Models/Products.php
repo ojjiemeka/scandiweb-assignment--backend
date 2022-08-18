@@ -50,14 +50,14 @@ class Product {
         try {
             //assigning values
             $this->sku = $data['sku'];
-            $this->product_name = $data['product_name'];
-            $this->price = $data['price'];
-            $this->type = $data['type'];
-            $this->size = $data['size'];
-            $this->weight = $data['weight'];
-            $this->height = $data['height'];
-            $this->width = $data['width'];
-            $this->length = $data['length'];
+            $this->product_name = $data['product_name'] ;
+            $this->price = $data['price'] ;
+            $this->type = $data['type'] ;
+            $this->size = empty($data['size']) ? null: $data['size'] ;
+            $this->weight = empty($data['weight']) ? null: $data['weight'] ;
+            $this->height = empty($data['height']) ? null: $data['height'] ;
+            $this->width = empty($data['width']) ? null: $data['width'] ;
+            $this->length = empty($data['length']) ? null: $data['length'] ;
 
             $query = "INSERT INTO $this->table 
             SET sku = :sku, 
