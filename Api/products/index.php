@@ -57,7 +57,7 @@ if($num > 0){
 }else{
     echo json_encode(
         array(
-            'message' => 'No Product Found'
+            'data' => 'No Product Found'
         )
         );
 }

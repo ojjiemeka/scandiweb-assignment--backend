@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 10, 2022 at 04:06 AM
+-- Generation Time: Aug 18, 2022 at 04:54 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.3
 
@@ -25,18 +25,6 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `category`
---
-
-CREATE TABLE `category` (
-  `id` int(11) NOT NULL,
-  `category_name` varchar(225) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `products`
 --
 
@@ -45,12 +33,12 @@ CREATE TABLE `products` (
   `sku` varchar(8) NOT NULL,
   `product_name` varchar(225) NOT NULL,
   `type` varchar(225) NOT NULL,
-  `price` int(10) NOT NULL,
-  `size` int(11) DEFAULT NULL,
-  `weight` int(11) DEFAULT NULL,
-  `height` int(11) DEFAULT NULL,
-  `width` int(11) DEFAULT NULL,
-  `length` int(11) DEFAULT NULL,
+  `price` varchar(10) NOT NULL,
+  `size` float DEFAULT NULL,
+  `weight` float DEFAULT NULL,
+  `height` float DEFAULT NULL,
+  `width` float DEFAULT NULL,
+  `length` float DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -59,23 +47,15 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `sku`, `product_name`, `type`, `price`, `size`, `weight`, `height`, `width`, `length`, `created_at`) VALUES
-(1, 'd58s8cv', 'Sample product_name', 'Books', 500, 0, 2, 0, 0, 0, '2022-08-09 22:51:25'),
-(2, 'fs90f8', 'Sample furniture text', 'furniture', 2500, 0, 2, 150, 110, 130, '2022-08-10 00:16:02'),
-(3, 'a123xy', 'Sample Dvd', 'furniture', 2500, 300, 0, 0, 0, 0, '2022-08-10 00:16:33'),
-(4, 'a123xy', 'Series product', 'book', 1700, 0, 1, 0, 0, 0, '2022-08-10 00:17:21'),
-(5, 'cdl080', 'Series product2', 'book', 1700, 0, 0, 0, 0, 0, '2022-08-10 00:17:33'),
-(6, 'cdl080', 'Series CD', 'DVD-disc', 100, 1000, 0, 0, 0, 0, '2022-08-10 00:18:20'),
-(7, 'pdl080', 'Series Chair', 'furniture', 1000, 0, 0, 20, 49, 50, '2022-08-10 00:18:50');
+(1, 'bo1234', 'Vivian Hines', 'book', '87000', NULL, 24, NULL, NULL, NULL, '2022-08-18 13:17:35'),
+(2, 'ANQQxb', 'test sample', 'book', '7000', NULL, 30, NULL, NULL, NULL, '2022-08-18 13:41:31'),
+(6, '1v5tf', 'Amela Trevino', 'dvd/cd', '237', 566, NULL, NULL, NULL, NULL, '2022-08-18 15:41:28'),
+(7, 'In hic', 'Adele Hawkins', 'furniture', '273', NULL, 0, 3, 5, 7, '2022-08-18 15:44:22'),
+(8, 'Pariat', 'Mikayla Rodgers', 'dvd/cd', '22', 128, NULL, NULL, NULL, NULL, '2022-08-18 15:45:44');
 
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `category`
---
-ALTER TABLE `category`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `products`
@@ -86,12 +66,6 @@ ALTER TABLE `products`
 --
 -- AUTO_INCREMENT for dumped tables
 --
-
---
--- AUTO_INCREMENT for table `category`
---
-ALTER TABLE `category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `products`
