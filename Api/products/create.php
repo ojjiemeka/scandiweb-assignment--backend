@@ -16,7 +16,7 @@ include_once '../../models/Products.php';
 $database = new Database();
 $db = $database->connect();
 
-/* Creating a new instance of the Post class and then calling the connect method on it. */
+/* Creating a new instance of the Product class and then calling the connect method on it. */
 $product = new Product($db);
 $json = json_decode(file_get_contents("php://input"));
 

@@ -16,7 +16,7 @@ $database = new Database();
 $db = $database->connect();
 
 
-/* Creating a new instance of the Post class and then calling the connect method on it. */
+/* Creating a new instance of the product class and then calling the connect method on it. */
 $product = new Product($db);
 
 

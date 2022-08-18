@@ -12,7 +12,7 @@
   $database = new Database();
   $db = $database->connect();
 
-  // Instantiate blog post object
+  // Instantiate product object
   $product = new Product($db);
 
   // Get raw posted data

@@ -43,7 +43,7 @@ class Product {
 
 
     /**
-     * It's a function that reads all the posts from the database and returns them in a statement.
+     * It's a function that reads all the product from the database and returns them in a statement.
      * 
      * @return An object of the PDOStatement class.
      */
