@@ -1,5 +1,8 @@
 <?php
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 class Product {
     // DB
 
@@ -43,79 +46,52 @@ class Product {
         return $stmt;
     }
 
-    public function create(){
-        $query = 'INSERT INTO ' . $this->table . ' 
-        SET sku = :sku, 
-            product_name = :product_name, 
-            price = :price, 
-            type = :type, 
-            size = :size, 
-            weight = :weight, 
-            height = :height, 
-            width = :width, 
-            length = :length ';
-
-        $stmt = $this->conn->prepare($query);
-
-        // $this->sku = $this->sku;
-        // $this->product_name = $this->product_name;
-        // $this->price = $this->price;
-        // $this->type = $this->type;
-        // $this->size = $this->size;
-        // $this->weight = $this->weight;
-        // $this->height = $this->height;
-        // $this->width = $this->width;
-        // $this->length = $this->length;
-
-        $this->sku = htmlspecialchars(strip_tags($this->sku));
-        $this->product_name = htmlspecialchars(strip_tags($this->product_name));
-        $this->price = htmlspecialchars(strip_tags($this->price));
-        $this->type = htmlspecialchars(strip_tags($this->type));
-        $this->size = htmlspecialchars(strip_tags($this->size));
-        $this->weight = htmlspecialchars(strip_tags($this->weight));
-        $this->height = htmlspecialchars(strip_tags($this->height));
-        $this->width = htmlspecialchars(strip_tags($this->width));
-        $this->length = htmlspecialchars(strip_tags($this->length));
-
-        $stmt->bindParam(':sku', $this->sku);
-        $stmt->bindParam(':product_name', $this->product_name);
-        $stmt->bindParam(':price', $this->price);
-        $stmt->bindParam(':type', $this->type);
-        $stmt->bindParam(':size', $this->size);
-        $stmt->bindParam(':weight', $this->weight);
-        $stmt->bindParam(':height', $this->height);
-        $stmt->bindParam(':width', $this->width);
-        $stmt->bindParam(':length', $this->length);
-
-        // echo json_encode(
-        //             array(
-        //                 'myres' => $query
-        //             )
-        //             );
-        //             die();
-
-        // if($stmt->execute()){
-        //     return true;
-        // }
-
+    public function create($data){
         try {
-            $stmt->execute();
-            // do other things if successfully inserted
-         } catch (PDOException $e) {
-            if ($e->errorInfo[1] == 1062) {
-               // duplicate entry, do something else
-                return false;
+            //assigning values
+            $this->sku = $data['sku'];
+            $this->product_name = $data['product_name'];
+            $this->price = $data['price'];
+            $this->type = $data['type'];
+            $this->size = $data['size'];
+            $this->weight = $data['weight'];
+            $this->height = $data['height'];
+            $this->width = $data['width'];
+            $this->length = $data['length'];
 
-            } else {
-               // an error other than duplicate entry occurred
-                return false;
+            $query = "INSERT INTO $this->table 
+            SET sku = :sku, 
+                product_name = :product_name, 
+                price = :price, 
+                type = :type, 
+                size = :size, 
+                weight = :weight, 
+                height = :height, 
+                width = :width, 
+                length = :length ";
+            
+            $product = $this->conn->prepare($query);
 
+            $product->bindValue('sku', $this->sku);
+            $product->bindValue('product_name', $this->product_name);
+            $product->bindValue('price', $this->price);
+            $product->bindValue('type', $this->type);
+            $product->bindValue('size', $this->size);
+            $product->bindValue('weight', $this->weight);
+            $product->bindValue('height', $this->height);
+            $product->bindValue('width', $this->width);
+            $product->bindValue('length', $this->length);
+
+            if($product->execute()){
+                return true;
             }
-         }
 
-        // printf("Error: %s.\n", $stmt->error);
+            return false;
 
-        // return false;
+
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
     }
 
     
