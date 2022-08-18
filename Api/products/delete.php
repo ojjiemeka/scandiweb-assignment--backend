@@ -15,21 +15,32 @@
   // Instantiate blog post object
   $product = new Product($db);
 
-
   // Get raw posted data
   $data = json_decode(file_get_contents("php://input"));
+  // echo json_encode(
+  //   array('message' => $data->checkedItems[0])
+  // );
 
   // Set ID to update
-  $product->id = $data->id;
+  if(count($data->checkedItems) > 0){
+    foreach($data->checkedItems as $x){
+      $product->id = $x;
+      $d = $product->delete();
+      // Delete post
+      if(!$d) {
+        echo json_encode(
+          array('message' => 'couldn\'t delete post with id '.$x)
+        );
+      }
+    }
 
-  // Delete post
-  if($product->delete()) {
     echo json_encode(
-      array('message' => 'Post Deleted')
+      array('message' => 'Deleted Successfully')
     );
-  } else {
+ 
+  }else{
     echo json_encode(
-      array('message' => 'Post Not Deleted')
+      array('message' => 'No ids received delete')
     );
   }
-
+ 

@@ -57,6 +57,16 @@ class Product {
 
         $stmt = $this->conn->prepare($query);
 
+        // $this->sku = $this->sku;
+        // $this->product_name = $this->product_name;
+        // $this->price = $this->price;
+        // $this->type = $this->type;
+        // $this->size = $this->size;
+        // $this->weight = $this->weight;
+        // $this->height = $this->height;
+        // $this->width = $this->width;
+        // $this->length = $this->length;
+
         $this->sku = htmlspecialchars(strip_tags($this->sku));
         $this->product_name = htmlspecialchars(strip_tags($this->product_name));
         $this->price = htmlspecialchars(strip_tags($this->price));
@@ -77,13 +87,35 @@ class Product {
         $stmt->bindParam(':width', $this->width);
         $stmt->bindParam(':length', $this->length);
 
-        if($stmt->execute()){
-            return true;
-        }
+        // echo json_encode(
+        //             array(
+        //                 'myres' => $query
+        //             )
+        //             );
+        //             die();
 
-        printf("Error: %s.\n", $stmt->error);
+        // if($stmt->execute()){
+        //     return true;
+        // }
 
-        return false;
+        try {
+            $stmt->execute();
+            // do other things if successfully inserted
+         } catch (PDOException $e) {
+            if ($e->errorInfo[1] == 1062) {
+               // duplicate entry, do something else
+                return false;
+
+            } else {
+               // an error other than duplicate entry occurred
+                return false;
+
+            }
+         }
+
+        // printf("Error: %s.\n", $stmt->error);
+
+        // return false;
     }
 
     
