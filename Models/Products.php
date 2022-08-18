@@ -26,6 +26,21 @@ class Product {
         $this->conn = $db;
     }
 
+    // public function random_str(
+    //     int $length = 64,
+    //     string $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    // ): string {
+    //     if ($length < 1) {
+    //         throw new \RangeException("Length must be a positive integer");
+    //     }
+    //     $pieces = [];
+    //     $max = mb_strlen($keyspace, '8bit') - 1;
+    //     for ($i = 0; $i < $length; ++$i) {
+    //         $pieces []= $keyspace[random_int(0, $max)];
+    //     }
+    //     return implode('', $pieces);
+    // }
+
 
     /**
      * It's a function that reads all the posts from the database and returns them in a statement.
@@ -58,6 +73,23 @@ class Product {
             $this->height = empty($data['height']) ? null: $data['height'] ;
             $this->width = empty($data['width']) ? null: $data['width'] ;
             $this->length = empty($data['length']) ? null: $data['length'] ;
+
+            // $q = "SELECT 'sku' FROM $this->table WHERE 'sku' = '$this->sku' ";
+    
+            $sql = "SELECT COUNT(*) FROM $this->table WHERE sku = '$this->sku'";// use `COUNT(*)`
+            $result = $this->conn->prepare($sql);
+            $result->execute();
+            $data = $result->fetchColumn();
+
+            
+            // echo json_encode(array('myres' => $data));
+
+            if ($data > 0) 
+                {
+                    echo json_encode(array('message' => "SKU already exists"));
+                    return false;
+                    die();
+                }
 
             $query = "INSERT INTO $this->table 
             SET sku = :sku, 

@@ -37,7 +37,7 @@ if(count($_POST)){
     ];
 
     if($product->create($data)){
-        echo json_encode(array('myres' => 'Product Added Successfully'));
+        echo json_encode(array('message' => 'Product Added Successfully'));
     }
     
 }elseif(isset($json))
@@ -56,6 +56,6 @@ if(count($_POST)){
     ];
 
     if($product->create($data)){
-        echo json_encode(array('myres' => 'Product Added Successfully'));
+        echo json_encode(array('message' => 'Product Added Successfully'));
     }
 }
