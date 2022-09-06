@@ -3,9 +3,9 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+
 class Product {
     // DB
-
     private $conn;
     private $table = 'products';
 
@@ -25,21 +25,6 @@ class Product {
     public function __construct($db){
         $this->conn = $db;
     }
-
-    // public function random_str(
-    //     int $length = 64,
-    //     string $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    // ): string {
-    //     if ($length < 1) {
-    //         throw new \RangeException("Length must be a positive integer");
-    //     }
-    //     $pieces = [];
-    //     $max = mb_strlen($keyspace, '8bit') - 1;
-    //     for ($i = 0; $i < $length; ++$i) {
-    //         $pieces []= $keyspace[random_int(0, $max)];
-    //     }
-    //     return implode('', $pieces);
-    // }
 
 
     /**
@@ -79,14 +64,11 @@ class Product {
             $sql = "SELECT COUNT(*) FROM $this->table WHERE sku = '$this->sku'";// use `COUNT(*)`
             $result = $this->conn->prepare($sql);
             $result->execute();
-            $data = $result->fetchColumn();
-
-            
+            $data = $result->fetchColumn();    
             // echo json_encode(array('myres' => $data));
-
             if ($data > 0) 
                 {
-                    echo json_encode(array('message' => "SKU already exists"));
+                    echo json_encode(array('status'=>"400", 'message' => "SKU already exists"));
                     return false;
                     die();
                 }

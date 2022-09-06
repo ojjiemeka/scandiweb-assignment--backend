@@ -42,7 +42,6 @@ if(count($_POST)){
     
 }elseif(isset($json))
 {
-    // print_r($json);
     $data = [
         'sku' => $json->sku,
         'product_name' => $json->product_name,
@@ -54,8 +53,10 @@ if(count($_POST)){
         'width' => $json->width,
         'length' => $json->length,
     ];
+    print_r($data);
 
-    if($product->create($data)){
-        echo json_encode(array('message' => 'Product Added Successfully'));
-    }
+
+    // if($product->create($data)){
+    //     echo json_encode(array('status'=>"200",'message' => 'Product Added Successfully'));
+    // }
 }
