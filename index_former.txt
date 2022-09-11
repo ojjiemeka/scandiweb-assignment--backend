@@ -11,7 +11,6 @@ class Product
     // DB
     private $conn;
     private $table = 'products';
-    private $product_item = array();
 
     // add types to properties
     //Product Properties
@@ -25,7 +24,6 @@ class Product
     private $height;
     private $width;
     private $length;
-    // private $checkedItems;
 
     public function startDB()
     {
@@ -37,42 +35,52 @@ class Product
     public function setId($id)
     {
         $this->id = $id;
+        return $this;
     }
     public function setSku($sku)
     {
         $this->sku = $sku;
+        return $this;
     }
     public function setProductName($product_name)
     {
         $this->product_name = $product_name;
+        return $this;
     }
     public function setPrice($price)
     {
         $this->price = $price;
+        return $this;
     }
     public function setType($type)
     {
         $this->type = $type;
+        return $this;
     }
     public function setSize($size)
     {
         $this->size = $size;
+        return $this;
     }
     public function setWeight($weight)
     {
         $this->weight = $weight;
+        return $this;
     }
     public function setHeight($height)
     {
         $this->height = $height;
+        return $this;
     }
     public function setWidth($width)
     {
         $this->width = $width;
+        return $this;
     }
     public function setLength($length)
     {
         $this->length = $length;
+        return $this;
     }
 
     // Getters
@@ -117,7 +125,6 @@ class Product
         return $this->length;
     }
 
-
     /**
      * It's a function that reads all the product from the database and returns them in a statement.
      * 
@@ -135,57 +142,12 @@ class Product
 
             // execute
             $query->execute();
+            // $query->fetch();
 
-            /* Counting the number of rows in the database. */
-            $num = $query->rowCount();
-            
-            $products_arr = [];
-
-            /* The below code is fetching the data from the database and then converting it into JSON format. */
-                while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-                    // extract($row);
-                    
-                        $this->setID($row['id']);
-                        $this->setSku($row['sku']);
-                        $this->setProductName($row['product_name']);
-                        $this->setType($row['type']);
-                        $this->setPrice($row['price']);
-                        $this->setSize($row['size']);
-                        $this->setWeight($row['weight']);
-                        $this->setHeight($row['height']);
-                        $this->setWidth($row['width']);
-                        $this->setLength($row['length']);
-                
-                        $data = [
-                            'id' => $this->getId(),
-                            'sku' => $this->getSku(),
-                            'product_name' => $this->getProductName(),
-                            'type' => $this->getType(),
-                            'price' => $this->getPrice(),
-                            'size' => $this->getSize(),
-                            'weight' => $this->getWeight(),
-                            'height' => $this->getHeight(),
-                            'width' => $this->getWidth(),
-                            'length' => $this->getLength()
-                        ];
-
-                        $product_arr[] = $data;
-                }
-                    
-                // echo json_encode($product_arr);
-
-
-            if (!$query->execute()) {
-                throw new Exception("Error!! Cant get products");
-            }
-            return $product_arr;
-
+            return $query;
             
         } catch (\Throwable $th) {
-            $response = [
-                'message' => $th->getMessage()
-            ];
-            echo json_encode($response);
+            //throw $th;
         }
     }
 
@@ -235,42 +197,13 @@ class Product
         }
     }
 
-    // Delete Product
-    public function delete()
+    public function find($id)
     {
-
-        $this->startDB();
-
-        // echo json_encode('heo');
-        // die();
-        // Create query
-        $query = 'DELETE FROM ' . $this->table . ' WHERE id = :id';
-
-        // Prepare statement
-        $stmt = $this->conn->prepare($query);
-
-        // Clean data
-        $this->id = trim(implode(",", $this->getId()));
-
-        // echo json_encode($this->getId());
-        // die();
-        
-        // Bind data
-        $stmt->bindValue('id', $this->getId());
-
-        // echo json_encode($this->getId());
-        // die();
-        
-        // Execute query
-        if ($stmt->execute()) {
-            return true;
-        }
-
-        // Print error if something goes wrong
-        printf("Error: %s.\n", $stmt->error);
-
-        // return false;
+        //          // query
+        //          // with the result, use the setters to the set the columns
+        //         // return $this;
     }
+
 
     // public function show()
     // {
@@ -302,5 +235,29 @@ class Product
     // }
 
 
-    
+    // Delete Post
+    public function delete()
+    {
+        // Create query
+        $query = 'DELETE FROM ' . $this->table . ' WHERE id = :id';
+
+        // Prepare statement
+        $stmt = $this->conn->prepare($query);
+
+        // Clean data
+        $this->id = htmlspecialchars(strip_tags($this->id));
+
+        // Bind data
+        $stmt->bindParam(':id', $this->id);
+
+        // Execute query
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        // Print error if something goes wrong
+        printf("Error: %s.\n", $stmt->error);
+
+        return false;
+    }
 }

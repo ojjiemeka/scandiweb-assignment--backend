@@ -7,41 +7,14 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
-
-include_once '../../config/Database.php';
-include_once '../../models/Products.php';
+require_once '../../models/Products.php';
 
 
-/* Creating a new instance of the Database class and then calling the connect method on it. */
-$database = new Database();
-$db = $database->connect();
-
-/* Creating a new instance of the Product class and then calling the connect method on it. */
-$product = new Product($db);
 $json = json_decode(file_get_contents("php://input"));
 
-if(count($_POST)){
-    // print_r($_POST);
+$data = [];
 
-    //creating new product from input
-    $data = [
-        'sku' => $_POST['sku'],
-        'product_name' => $_POST['product_name'],
-        'price' => $_POST['price'],
-        'type' => $_POST['type'],
-        'size' => $_POST['size'],
-        'weight' => $_POST['weight'],
-        'height' => $_POST['height'],
-        'width' => $_POST['width'],
-        'length' => $_POST['length'],
-    ];
-
-    if($product->create($data)){
-        echo json_encode(array('message' => 'Product Added Successfully'));
-    }
-    
-}elseif(isset($json))
-{
+if(isset($json)) {
     $data = [
         'sku' => $json->sku,
         'product_name' => $json->product_name,
@@ -53,10 +26,37 @@ if(count($_POST)){
         'width' => $json->width,
         'length' => $json->length,
     ];
-    print_r($data);
+    // print_r($data);
+
+} else {
+    echo json_encode(array('message' => 'Error'));
+    exit();
+}
+
+$product = new Product();
+$product->setSku($data['sku']);
+$product->setProductName($data['product_name']);
+$product->setPrice($data['price']);
+$product->setType($data['type']);
+$product->setSize($data['size']);
+$product->setWeight($data['weight']);
+$product->setHeight($data['height']);
+$product->setWidth($data['width']);
+$product->setLength($data['length']);
+
+try {
+    $product->create();
+    $response = [
+        'message' => "Created Successfully"
+    ];
+    echo json_encode($response);
+    // echo json_encode($product);
 
 
-    // if($product->create($data)){
-    //     echo json_encode(array('status'=>"200",'message' => 'Product Added Successfully'));
-    // }
+} catch (\Throwable $th) {
+    $response = [
+        'message' => $th->getMessage()
+    ];
+    echo json_encode($response);
+
 }

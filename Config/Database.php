@@ -24,6 +24,10 @@ class Database {
 
       return $this->conn;
     }
+
+    public static function connection(){
+      return self::connect();
+    }
   }
   
 ?>
