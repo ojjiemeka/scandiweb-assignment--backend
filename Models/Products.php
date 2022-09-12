@@ -5,15 +5,13 @@ ini_set('display_errors', 1);
 
 require_once '../../config/Database.php';
 
-
 class Product
 {
     // DB
     private $conn;
     private $table = 'products';
-    private $product_item = array();
 
-    // add types to properties
+   
     //Product Properties
     private $id;
     private $sku;
@@ -143,37 +141,33 @@ class Product
 
             /* The below code is fetching the data from the database and then converting it into JSON format. */
                 while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-                    // extract($row);
-                    
-                        $this->setID($row['id']);
-                        $this->setSku($row['sku']);
-                        $this->setProductName($row['product_name']);
-                        $this->setType($row['type']);
-                        $this->setPrice($row['price']);
-                        $this->setSize($row['size']);
-                        $this->setWeight($row['weight']);
-                        $this->setHeight($row['height']);
-                        $this->setWidth($row['width']);
-                        $this->setLength($row['length']);
                 
-                        $data = [
-                            'id' => $this->getId(),
-                            'sku' => $this->getSku(),
-                            'product_name' => $this->getProductName(),
-                            'type' => $this->getType(),
-                            'price' => $this->getPrice(),
-                            'size' => $this->getSize(),
-                            'weight' => $this->getWeight(),
-                            'height' => $this->getHeight(),
-                            'width' => $this->getWidth(),
-                            'length' => $this->getLength()
-                        ];
+                    $this->setID($row['id']);
+                    $this->setSku($row['sku']);
+                    $this->setProductName($row['product_name']);
+                    $this->setType($row['type']);
+                    $this->setPrice($row['price']);
+                    $this->setSize($row['size']);
+                    $this->setWeight($row['weight']);
+                    $this->setHeight($row['height']);
+                    $this->setWidth($row['width']);
+                    $this->setLength($row['length']);
+            
+                    $data = [
+                        'id' => $this->getId(),
+                        'sku' => $this->getSku(),
+                        'product_name' => $this->getProductName(),
+                        'type' => $this->getType(),
+                        'price' => $this->getPrice(),
+                        'size' => $this->getSize(),
+                        'weight' => $this->getWeight(),
+                        'height' => $this->getHeight(),
+                        'width' => $this->getWidth(),
+                        'length' => $this->getLength()
+                    ];
 
-                        $product_arr[] = $data;
+                    $product_arr[] = $data;
                 }
-                    
-                // echo json_encode($product_arr);
-
 
             if (!$query->execute()) {
                 throw new Exception("Error!! Cant get products");
@@ -238,38 +232,29 @@ class Product
     // Delete Product
     public function delete()
     {
+        try {
+            $this->startDB();
 
-        $this->startDB();
+            $b = trim(implode(",", $this->getId()));
 
-        // echo json_encode('heo');
-        // die();
-        // Create query
-        $query = 'DELETE FROM ' . $this->table . ' WHERE id = :id';
+            $query = "DELETE FROM $this->table WHERE id IN ($b)";
 
-        // Prepare statement
-        $stmt = $this->conn->prepare($query);
+            // Prepare statement
+            $stmt = $this->conn->prepare($query);
 
-        // Clean data
-        $this->id = trim(implode(",", $this->getId()));
+            // Execute query
+            if (!$stmt->execute()) {
+                throw new Exception("Something went wrong");
+            }
 
-        // echo json_encode($this->getId());
-        // die();
-        
-        // Bind data
-        $stmt->bindValue('id', $this->getId());
-
-        // echo json_encode($this->getId());
-        // die();
-        
-        // Execute query
-        if ($stmt->execute()) {
             return true;
+
+        } catch (\Throwable $th) {
+            $response = [
+                'message' => $th->getMessage()
+            ];
+            echo json_encode($response);
         }
-
-        // Print error if something goes wrong
-        printf("Error: %s.\n", $stmt->error);
-
-        // return false;
     }
 
     // public function show()

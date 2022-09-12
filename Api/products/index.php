@@ -10,7 +10,7 @@ require_once '../../models/Products.php';
 /* Creating a new instance of the product class and then calling the connect method on it. */
 $product = new Product();
 
-/* Calling the read method on the product class. */
+/* Calling the getAllProducts method on the product class. */
 $res = $product->getAllProducts();
 
     if (empty($res)) {

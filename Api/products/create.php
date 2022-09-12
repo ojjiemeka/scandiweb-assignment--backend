@@ -47,11 +47,10 @@ $product->setLength($data['length']);
 try {
     $product->create();
     $response = [
-        'message' => "Created Successfully"
+        'message' => "Created Successfully",
+        'status' => 200
     ];
     echo json_encode($response);
-    // echo json_encode($product);
-
 
 } catch (\Throwable $th) {
     $response = [
